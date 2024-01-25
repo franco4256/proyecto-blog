@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club de Fútbol</title>
+    <link rel="stylesheet" href="{% static 'futbol/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <h1>Club de Fútbol</h1>
+        <p>Bienvenido a nuestra página web dedicada al mundo del fútbol.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Últimas Noticias</h2>
+            {% for noticia in noticias %}
+            <article>
+                <h3>{{ noticia.titulo }}</h3>
+                <p>{{ noticia.contenido }}</p>
+            </article>
+            {% endfor %}
+        </section>
+
+        <section>
+            <h2>Próximos Eventos</h2>
+            <ul>
+                {% for evento in eventos %}
+                <li>{{ evento.nombre }}: {{ evento.fecha }}, {{ evento.hora }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+
+    <aside>
+        <h2>Contacto</h2>
+        <p>Para más información, contáctenos:</p>
+        <address>
+            <p>{{ contacto.direccion }}</p>
+            <p>Teléfono: {{ contacto.telefono }}</p>
+            <p>Email: {{ contacto.email }}</p>
+        </address>
+    </aside>
+
+    <section>
+        <h2>Galería</h2>
+        <div class="gallery">
+            {% for imagen in galeria_imagenes %}
+            <img src="{% static 'futbol/' %}{{ imagen }}" alt="Imagen">
+            {% endfor %}
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Club de Fútbol. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
