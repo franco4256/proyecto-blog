@@ -3,59 +3,919 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club de Fútbol</title>
-    <link rel="stylesheet" href="{% static 'futbol/style.css' %}">
+    <title>Blog de Fútbol</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            color: #007bff;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin: 0 15px;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+        }
+
+        /* Estilos de la sección destacada */
+        .featured-section {
+            background-image: url('fondo_destacado.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            margin-top: 70px; /* Tamaño del encabezado */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        /* Estilos del carrusel de artículos destacados */
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            margin: 20px 0;
+        }
+
+        .carousel-article {
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+            width: 70%;
+            margin-right: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .carousel-article img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .carousel-article .article-details {
+            padding: 1rem;
+        }
+
+        /* Estilos de la sección de jugadores destacados */
+        .players-section {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: -70px; /* Compensar el tamaño del encabezado */
+        }
+
+        .player {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .player img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        /* Estilos de la sección de eventos próximos */
+        .events-section {
+            padding: 2rem;
+            background-color: #f0f0f0;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .event {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .event img {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+        /* Estilos de la sección de estadísticas */
+        .statistics-section {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .statistics-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .statistics {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .statistic {
+            flex: 1;
+            margin: 10px;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+        }
+
+        /* Estilos de la sección de resultados */
+        .results-section {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .result {
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+        }
+
+        /* Estilos de la sección de noticias */
+        .news-section {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .news {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .news-item {
+            flex: 0 0 calc(33.333% - 20px);
+            margin: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .news-item .news-details {
+            padding: 1rem;
+        }
+
+        /* Estilos de la sección de resultados */
+        .results-section {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .result {
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+        }
+
+        /* Estilos de la sección de patrocinadores */
+        .sponsors-section {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .sponsors {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .sponsor img {
+            max-width: 150px;
+            max-height: 100px;
+            object-fit: contain;
+            margin: 10px;
+        }
+
+        /* Estilos de la sección de suscripción */
+        .subscribe-form {
+            padding: 2rem;
+            background-color: #f0f0f0;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .subscribe-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .subscribe-form input {
+            width: 70%;
+            padding: 0.5rem;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .subscribe-form button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .subscribe-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+            display: none;
+        }
+
+        /* Estilos de la sección de artículos */
+        .articles-section {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .article {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .article img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .article .article-details {
+            padding: 1rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .page-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .page-link:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos del widget de redes sociales */
+        .social-widget {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translate(0, -50%);
+            background-color: #007bff;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 5px 0 0 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .social-widget a {
+            color: #fff;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Estilos de la barra de navegación fija */
+        .navbar-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        /* Estilos de la galería de imágenes */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .image {
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .image:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Estilos de la sección de videos */
+        .videos {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .video-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .video-container:hover img {
+            transform: scale(1.1);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .play-button::before {
+            content: '\25BA';
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        /* Estilos de la sección de comentarios */
+        .comments-section {
+            padding: 2rem;
+            background-color: #f0f0f0;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .comments {
+            margin-bottom: 20px;
+        }
+
+        .comment {
+            border-bottom: 1px solid #ccc;
+            padding: 1rem 0;
+        }
+
+        .comment h3 {
+            color: #007bff;
+        }
+
+        .comment p {
+            margin: 10px 0;
+        }
+
+        .comment button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment button:hover {
+            background-color: #0056b3;
+        }
+
+        .comment-form-container {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comment-form label {
+            margin-bottom: 5px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            margin-bottom: 10px;
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Estilos de la sección de contacto */
+        .contact-form {
+            padding: 2rem;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .contact-form button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos de la biografía del autor */
+        .author-bio {
+            padding: 2rem;
+            background-color: #f0f0f0;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .author-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        /* Estilos del widget de redes sociales en la versión móvil */
+        @media (max-width: 768px) {
+            .social-widget {
+                display: none;
+            }
+
+            .navbar-fixed {
+                position: relative;
+                box-shadow: none;
+            }
+        }
+
+        /* Animación del loader */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>Club de Fútbol</h1>
-        <p>Bienvenido a nuestra página web dedicada al mundo del fútbol.</p>
+    <!-- Barra de navegación fija -->
+    <header id="header" class="navbar-fixed">
+        <nav>
+            <a href="#destacados">Destacados</a>
+            <a href="#jugadores">Jugadores</a>
+            <a href="#eventos">Eventos</a>
+            <a href="#estadisticas">Estadísticas</a>
+            <a href="#resultados">Resultados</a>
+            <a href="#noticias">Noticias</a>
+            <a href="#patrocinadores">Patrocinadores</a>
+            <a href="#suscribete">Suscríbete</a>
+            <a href="#articulos">Artículos</a>
+            <a href="#comentarios">Comentarios</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
     </header>
 
-    <main>
-        <section>
-            <h2>Últimas Noticias</h2>
-            {% for noticia in noticias %}
-            <article>
-                <h3>{{ noticia.titulo }}</h3>
-                <p>{{ noticia.contenido }}</p>
-            </article>
-            {% endfor %}
-        </section>
+    <!-- Sección destacada -->
+    <div class="featured-section" id="destacados">
+        Descubre las últimas novedades y emociones del fútbol en nuestro blog.
+    </div>
 
-        <section>
-            <h2>Próximos Eventos</h2>
-            <ul>
-                {% for evento in eventos %}
-                <li>{{ evento.nombre }}: {{ evento.fecha }}, {{ evento.hora }}</li>
-                {% endfor %}
-            </ul>
-        </section>
-    </main>
-
-    <aside>
-        <h2>Contacto</h2>
-        <p>Para más información, contáctenos:</p>
-        <address>
-            <p>{{ contacto.direccion }}</p>
-            <p>Teléfono: {{ contacto.telefono }}</p>
-            <p>Email: {{ contacto.email }}</p>
-        </address>
-    </aside>
-
-    <section>
-        <h2>Galería</h2>
-        <div class="gallery">
-            {% for imagen in galeria_imagenes %}
-            <img src="{% static 'futbol/' %}{{ imagen }}" alt="Imagen">
-            {% endfor %}
+    <!-- Carrusel de artículos destacados -->
+    <section class="carousel">
+        <div class="carousel-article">
+            <img src="destacado1.jpg" alt="Artículo Destacado 1">
+            <div class="article-details">
+                <h3>El Partido del Siglo</h3>
+                <p>Fecha de Publicación: 10/02/2024</p>
+                <button onclick="toggleLike(1)">Me Gusta</button>
+                <span id="like-count-1">0</span>
+            </div>
         </div>
+        <div class="carousel-article">
+            <img src="destacado2.jpg" alt="Artículo Destacado 2">
+            <div class="article-details">
+                <h3>Entrevista Exclusiva al Capitán</h3>
+                <p>Fecha de Publicación: 12/02/2024</p>
+                <button onclick="toggleLike(2)">Me Gusta</button>
+                <span id="like-count-2">0</span>
+            </div>
+        </div>
+        <!-- Agrega más artículos destacados según sea necesario -->
     </section>
 
-    <footer>
-        <p>&copy; 2024 Club de Fútbol. Todos los derechos reservados.</p>
-    </footer>
+    <!-- Sección de jugadores destacados -->
+    <div class="players-section" id="jugadores">
+        <h2>Jugadores Destacados</h2>
+        <div class="player">
+            <img src="jugador1.jpg" alt="Jugador 1">
+            <div>
+                <h3>Lionel Messi</h3>
+                <p>Posición: Delantero</p>
+            </div>
+        </div>
+        <div class="player">
+            <img src="jugador2.jpg" alt="Jugador 2">
+            <div>
+                <h3>Cristiano Ronaldo</h3>
+                <p>Posición: Delantero</p>
+            </div>
+        </div>
+        <!-- Agrega más jugadores según sea necesario -->
+    </div>
+
+    <!-- Sección de eventos próximos -->
+    <div class="events-section" id="eventos">
+        <h2>Eventos Próximos</h2>
+        <div class="event">
+            <img src="evento1.jpg" alt="Evento 1">
+            <div>
+                <h3>Partido de Liga</h3>
+                <p>Fecha: 20/02/2024</p>
+            </div>
+        </div>
+        <div class="event">
+            <img src="evento2.jpg" alt="Evento 2">
+            <div>
+                <h3>Copa Internacional</h3>
+                <p>Fecha: 25/02/2024</p>
+            </div>
+        </div>
+        <!-- Agrega más eventos según sea necesario -->
+    </div>
+
+    <!-- Sección de estadísticas -->
+    <div class="statistics-section" id="estadisticas">
+        <h2>Estadísticas</h2>
+        <div class="statistics">
+            <div class="statistic">
+                <h3>Goles Anotados</h3>
+                <p>150</p>
+            </div>
+            <div class="statistic">
+                <h3>Asistencias</h3>
+                <p>80</p>
+            </div>
+            <div class="statistic">
+                <h3>Partidos Ganados</h3>
+                <p>25</p>
+            </div>
+            <!-- Agrega más estadísticas según sea necesario -->
+        </div>
+    </div>
+
+    <!-- Sección de resultados -->
+    <div class="results-section" id="resultados">
+        <h2>Resultados Recientes</h2>
+        <div class="results">
+            <div class="result">
+                <h3>Partido 1</h3>
+                <p>Equipo Local 2 - 1 Equipo Visitante</p>
+            </div>
+            <div class="result">
+                <h3>Partido 2</h3>
+                <p>Equipo Local 3 - 0 Equipo Visitante</p>
+            </div>
+            <!-- Agrega más resultados según sea necesario -->
+        </div>
+    </div>
+
+    <!-- Sección de noticias -->
+    <div class="news-section" id="noticias">
+        <h2>Últimas Noticias</h2>
+        <div class="news">
+            <div class="news-item">
+                <img src="noticia1.jpg" alt="Noticia 1">
+                <div class="news-details">
+                    <h3>Nuevos Talentos en el Fútbol</h3>
+                    <p>Fecha: 15/02/2024</p>
+                    <p>Descubre a las jóvenes promesas que están destacando en el mundo del fútbol.</p>
+                </div>
+            </div>
+            <div class="news-item">
+                <img src="noticia2.jpg" alt="Noticia 2">
+                <div class="news-details">
+                    <h3>Entrenador del Mes</h3>
+                    <p>Fecha: 16/02/2024</p>
+                    <p>El entrenador del equipo es reconocido como el mejor del mes por sus logros destacados.</p>
+                </div>
+            </div>
+            <!-- Agrega más noticias según sea necesario -->
+        </div>
+    </div>
+
+    <!-- Sección de patrocinadores -->
+    <div class="sponsors-section" id="patrocinadores">
+        <h2>Patrocinadores</h2>
+        <div class="sponsors">
+            <div class="sponsor"><img src="sponsor1.jpg" alt="Patrocinador 1"></div>
+            <div class="sponsor"><img src="sponsor2.jpg" alt="Patrocinador 2"></div>
+            <div class="sponsor"><img src="sponsor3.jpg" alt="Patrocinador 3"></div>
+            <!-- Agrega más patrocinadores según sea necesario -->
+        </div>
+    </div>
+
+    <!-- Sección de suscripción -->
+    <div class="subscribe-form" id="suscribete">
+        <h2>Suscríbete para Recibir Noticias y Actualizaciones</h2>
+        <form id="subscribe-form" onsubmit="subscribe()">
+            <label for="subscribe-email">Correo Electrónico:</label>
+            <input type="email" id="subscribe-email" name="subscribe-email" required>
+            <button type="submit">Suscribirse</button>
+            <div class="loader" id="subscribe-loader"></div>
+        </form>
+    </div>
+
+    <!-- Sección de artículos -->
+    <div class="articles-section" id="articulos">
+        <h2>Artículos Recientes</h2>
+        <div class="articles">
+            <div class="article">
+                <img src="articulo1.jpg" alt="Artículo 1">
+                <div class="article-details">
+                    <h3>Impacto de la Tecnología en el Fútbol</h3>
+                    <p>Fecha de Publicación: 18/02/2024</p>
+                    <p>Exploramos cómo la tecnología ha transformado el juego y la experiencia de los aficionados.</p>
+                </div>
+            </div>
+            <div class="article">
+                <img src="articulo2.jpg" alt="Artículo 2">
+                <div class="article-details">
+                    <h3>Consejos para Mejorar tu Juego</h3>
+                    <p>Fecha de Publicación: 20/02/2024</p>
+                    <p>Conoce algunos consejos prácticos para elevar tu rendimiento en el campo.</p>
+                </div>
+            </div>
+            <!-- Agrega más artículos según sea necesario -->
+        </div>
+        <div class="pagination">
+            <a href="#" class="page-link">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <!-- Agrega más páginas según sea necesario -->
+        </div>
+    </div>
+
+    <!-- Sección de comentarios -->
+    <div class="comments-section" id="comentarios">
+        <h2>Comentarios</h2>
+        <div class="comments">
+            <div class="comment">
+                <h3>Usuario 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi.</p>
+                <button onclick="toggleLikeComment(1)">Me Gusta</button>
+                <span id="comment-like-count-1">0</span>
+            </div>
+            <div class="comment">
+                <h3>Usuario 2</h3>
+                <p>Proin euismod dui in lacinia tincidunt. Phasellus ut mi et urna suscipit aliquam.</p>
+                <button onclick="toggleLikeComment(2)">Me Gusta</button>
+                <span id="comment-like-count-2">0</span>
+            </div>
+            <!-- Agrega más comentarios según sea necesario -->
+        </div>
+        <button onclick="showCommentForm()">Agregar Comentario</button>
+        <div class="comment-form-container" id="comment-form-container">
+            <form class="comment-form" id="comment-form" onsubmit="submitComment(event)">
+                <label for="comment-user">Nombre:</label>
+                <input type="text" id="comment-user" name="comment-user" required>
+                <label for="comment-content">Comentario:</label>
+                <textarea id="comment-content" name="comment-content" rows="4" required></textarea>
+                <button type="submit">Enviar Comentario</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sección de contacto -->
+    <div class="contact-form" id="contacto">
+        <h2>Contacto</h2>
+        <form id="contact-form" onsubmit="submitForm(event)">
+            <label for="contact-name">Nombre:</label>
+            <input type="text" id="contact-name" name="contact-name" required>
+            <label for="contact-email">Correo Electrónico:</label>
+            <input type="email" id="contact-email" name="contact-email" required>
+            <label for="contact-message">Mensaje:</label>
+            <textarea id="contact-message" name="contact-message" rows="4" required></textarea>
+            <button type="submit">Enviar Mensaje</button>
+        </form>
+    </div>
+
+    <!-- Biografía del autor -->
+    <div class="author-bio">
+        <img src="autor.jpg" alt="Autor" class="author-image">
+        <div>
+            <h2>John Doe</h2>
+            <p>Apasionado del fútbol y escritor aficionado. Compartiendo historias y análisis sobre el hermoso juego.</p>
+        </div>
+    </div>
+
+    <!-- Widget de redes sociales -->
+    <div class="social-widget">
+        <a href="#" target="_blank">Facebook</a>
+        <a href="#" target="_blank">Twitter</a>
+        <a href="#" target="_blank">Instagram</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <script>
+        function toggleLike(articleId) {
+            var likeCount = document.getElementById('like-count-' + articleId);
+            var currentLikes = parseInt(likeCount.innerText);
+            likeCount.innerText = currentLikes + 1;
+        }
+
+        function toggleLikeComment(commentId) {
+            var likeCount = document.getElementById('comment-like-count-' + commentId);
+            var currentLikes = parseInt(likeCount.innerText);
+            likeCount.innerText = currentLikes + 1;
+        }
+
+        function showCommentForm() {
+            var commentFormContainer = document.getElementById('comment-form-container');
+            commentFormContainer.style.display = 'block';
+        }
+
+        function submitComment(event) {
+            event.preventDefault();
+            var commentUser = document.getElementById('comment-user').value;
+            var commentContent = document.getElementById('comment-content').value;
+
+            // Aquí puedes agregar lógica para manejar el envío del comentario
+
+            // Limpiar el formulario
+            document.getElementById('comment-user').value = '';
+            document.getElementById('comment-content').value = '';
+
+            // Ocultar el formulario
+            var commentFormContainer = document.getElementById('comment-form-container');
+            commentFormContainer.style.display = 'none';
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            // Aquí puedes agregar lógica para manejar el formulario de contacto
+            alert('¡Mensaje enviado con éxito!');
+        }
+
+        function subscribe() {
+            // Simular una suscripción (puedes agregar lógica real aquí)
+            var loader = document.querySelector('.loader');
+            loader.style.display = 'block';
+            setTimeout(function() {
+                loader.style.display = 'none';
+                alert('¡Gracias por suscribirte!');
+            }, 2000);
+        }
+
+        // Agregar más funciones según sea necesario
+
+        // Lightbox para la galería de imágenes
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true
+        });
+    </script>
 
 </body>
 </html>
